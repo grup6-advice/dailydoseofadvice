@@ -1,24 +1,24 @@
 const {User} = require('../models');
 const {comparePassword} = require('../helpers/bcrypt');
-const jwt = require('jsonwebtoken');
+const { generateToken } = require('../helpers/jwt');
 
 class UserController {
   static register (req, res, next) {
     let {email , password} = req.body;
-
+    
     let object = {
       email, password
     }
-
+    
     User.create(object) 
-      .then(newUser => {
+    .then(newUser => {
         let newUserEmail = newUser.email;
         let newUserId = newUser.id;
 
         res.status(201).json({ id : newUserId, email : newUserEmail });
       })
       .catch(err => {
-        res.status(500).json({message : 'Internal server error'})
+        next(err)
       })
   }
 
@@ -41,18 +41,25 @@ class UserController {
             let id = userDb.id;
             let email = userDb.email;
             let payload = {id, email};
-            let access_token = jwt.sign(payload, process.env.secretkey);
+            let access_token = generateToken(payload);
+            
             res.status(200).json({id, email, access_token});
           } else {
-             res.status(401).json({message : 'Invalid email or password'})
+              throw {
+                name: 'customErr',
+                message: 'Invalid email or password'
+              }
           }
 
         } else {
-           res.status(401).json({message : 'Invalid email or password'})
+          throw {
+            name: 'customErr',
+            message: 'Invalid email or password'
+          }
         }
       })
       .catch(err => {
-         res.status(500).json({message : 'Internal server error'})
+          next(err)
       })
   }
 

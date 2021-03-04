@@ -8,4 +8,4 @@ function comparePassword (bodyPassword, dbPassword) {
   return bcryptjs.compareSync(bodyPassword, dbPassword);
 }
 
-module.exports = {hashPassword, comparePassword}
+module.exports = { hashPassword, comparePassword}
