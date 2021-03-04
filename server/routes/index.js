@@ -12,5 +12,4 @@ router.get('/quotes', ApiController.stoicQuotes);
 router.get('/advice', ApiController.adviceQuotes);
 router.get('/images', ApiController.imageUrl);
 
-
 module.exports = router;

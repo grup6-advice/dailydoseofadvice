@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "sby",
-    "password": "postgresql",
+    "username": "brilianrachmadnurwachidin",
+    "password": "postgres",
     "database": "dailydose",
     "host": "127.0.0.1",
     "dialect": "postgres"
