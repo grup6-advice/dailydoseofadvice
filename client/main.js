@@ -17,6 +17,21 @@ $(document).ready(() => {
     e.preventDefault()
     login()
   })
+
+  $("#btn-register").on("click", (e) => {
+    e.preventDefault()
+    register()
+  })
+
+  $("#btn-logout").on("click", (e) => {
+    e.preventDefault()
+    logout()
+  })
+
+  $("#salvage").on("click", (e) => {
+    e.preventDefault()
+    fetchPicture()
+  })
 })
 
 function auth() {
@@ -25,11 +40,14 @@ function auth() {
     $("#register").hide()
     $("#salvation-card").hide()
     $("#btn-logout").hide()
+    $("#title").hide()
   } else {
     $("#login").hide()
     $("#register").hide()
     $("#salvation-card").show()
     $("#btn-logout").show()
+    $("#title").show()
+    fetchPicture()
   }
 }
 
@@ -95,19 +113,62 @@ function showRegisterForm() {
 }
 
 function fetchQuote() {
-  $("#").empty()
   $.ajax({
-    url: baseUrl + "",
+    url: baseUrl + "quotes",
     method: "GET",
     headers: {
       access_token: localStorage.getItem('access_token')
     }
   })
   .then(response => {
-    response.forEach((el, index) => {
-      $("#").append()
-    })
-    $("#").show()
+      $("#quote").append(`
+      <p class="card-text">${response.quote}</p>
+      `)
+      // <h5 class="card-title mb-4">${response.quote}</h5>
+      
+    $("#quote").show()
+  })
+  .fail((xhr, text) => {
+    console.log({ xhr, text });
+})
+}
+
+function fetchAdvice() {
+  $.ajax({
+    url: baseUrl + "advice",
+    method: "GET",
+    headers: {
+      access_token: localStorage.getItem('access_token')
+    }
+  })
+  .then(response => {
+      $("#quote").append(`
+      <h5 class="card-title mb-4">${response.advice}</h5>
+      `)
+      fetchQuote()
+    // $("#quote").show()
+  })
+  .fail((xhr, text) => {
+    console.log({ xhr, text });
+})
+}
+
+function fetchPicture() {
+  $("#quote").empty()
+  $.ajax({
+    url: baseUrl + "images",
+    method: "GET",
+    headers: {
+      access_token: localStorage.getItem('access_token')
+    }
+  })
+  .then(response => {
+      $("#quote").append(`
+      <img src="${response.imageUrl}" class="card-img-top">
+      `)
+      // <h5 class="card-title mb-4">${response.quote}</h5>
+      fetchAdvice()
+    // $("#quote").show()
   })
   .fail((xhr, text) => {
     console.log({ xhr, text });
