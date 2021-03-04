@@ -38,7 +38,7 @@ class ApiController {
     })
       .then(image => {
         let length = image.data.hits.length;
-        let indexRandom = Math.floor(Math.random() * length);
+        let indexRandom = Math.round(Math.random() * length-1);
         let imageUrl = image.data.hits[indexRandom].webformatURL;
         res.status(200).json({imageUrl});
       })

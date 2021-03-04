@@ -42,6 +42,7 @@ class UserController {
             let email = userDb.email;
             let payload = {id, email};
             let access_token = generateToken(payload);
+           
             
             res.status(200).json({id, email, access_token});
           } else {
