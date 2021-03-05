@@ -216,6 +216,7 @@ function onSignIn(googleUser) {
     }
   })
   .done(data => {
+    hello.play()
     localStorage.setItem("access_token", data.access_token)
     auth()
   })
