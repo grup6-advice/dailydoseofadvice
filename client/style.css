@@ -1,0 +1,100 @@
+body {
+  background-image: url(https://www.wallpapertip.com/wmimgs/102-1023424_ocean-sunset.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  margin: 0;
+}
+
+.login-form {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin: auto;
+}
+
+.register-form {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin: auto;
+}
+
+.display-3 {
+  color: black;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #636e72;
+}
+
+/* .logo-ddos {
+  position: absolute;
+  left: 0px;
+  padding: 10px;
+} */
+
+.login {
+  margin-top: 60px;
+}
+
+.register {
+  margin-top: 60px;
+}
+
+.btn-submit {
+  background-color: #ff7675;
+}
+
+.btn:hover {
+  background-color: #d63031;
+}
+
+.form-label {
+  margin-top: 25px;
+  font-size: 25px;
+  color: black;
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: grey;
+}
+
+.salv-card {
+  margin-top: 10px !important;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin: auto;
+  background-color: transparent;
+  width: 500px;
+}
+
+h5 {
+  color: red;
+}
+
+p {
+  color: black;
+}
+
+#btn-logout {
+  float: right;
+}
+
+.display-4 {
+  color: red;
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: black;
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  text-align: center;
+}
+
+h1 {
+  margin-top: 0px !important;
+  padding-top: 0px !important;
+  top: 0px !important;
+}
+
+.g-signin2 {
+  margin: auto;
+  width: 50%;
+  padding: 2px;
+}
