@@ -3,6 +3,7 @@ const UserController = require('../controllers/userController');
 const authenticate = require('../middleware/authenticate');
 const ApiController = require('../controllers/apiController');
 
+router.post('/googleLogin', UserController.googleLogin);
 router.post('/register', UserController.register);
 router.post('/login', UserController.login);
 

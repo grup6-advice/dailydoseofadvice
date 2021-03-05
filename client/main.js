@@ -26,11 +26,17 @@ $(document).ready(() => {
   $("#btn-logout").on("click", (e) => {
     e.preventDefault()
     logout()
+    signOut()
   })
 
   $("#salvage").on("click", (e) => {
     e.preventDefault()
     fetchPicture()
+  })
+
+  $("#g-signin2").on("click", (e) => {
+    e.preventDefault()
+    onSignIn()
   })
 })
 
@@ -177,10 +183,22 @@ function fetchPicture() {
 }
 
 function onSignIn(googleUser) {
-  // var profile = googleUser.getBasicProfile();
-  // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  // console.log('Name: ' + profile.getName());
-  // console.log('Image URL: ' + profile.getImageUrl());
-  // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-  var id_token = googleUser.getAuthResponse().id_token;
+  $.ajax({
+    url: 'http://localhost:3000/googleLogin',
+    method: "POST",
+    data: {
+      token: googleUser.getAuthResponse().id_token
+    }
+  })
+  .done(data => {
+    localStorage.setItem("access_token", data.access_token)
+    auth()
+  })
+  .fail((xhr, text) => {
+    console.log(xhr, text)
+  })
+  .always(_=> {
+    $('#register-email').val("")
+    $('#register-password').val("")
+  })
 }
