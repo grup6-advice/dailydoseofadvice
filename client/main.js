@@ -31,7 +31,9 @@ $(document).ready(() => {
 
   $("#salvage").on("click", (e) => {
     e.preventDefault()
-    fetchPicture()
+    duckQuack.play()
+    $("#quote").empty()
+      fetchPicture()
   })
 
   $("#g-signin2").on("click", (e) => {
@@ -39,6 +41,10 @@ $(document).ready(() => {
     onSignIn()
   })
 })
+
+const duckQuack = new Audio('./assets/quacksound.mp3')
+const byebye = new Audio('./assets/byebye.mp4')
+const hello = new Audio('./assets/hello.mp4')
 
 function auth() {
   if(!localStorage.getItem("access_token")) {
@@ -53,6 +59,7 @@ function auth() {
     $("#salvation-card").show()
     $("#btn-logout").show()
     $("#title").show()
+    $("#quote").empty()
     fetchPicture()
   }
 }
@@ -70,15 +77,23 @@ function login() {
     }
   })
   .done(data => {
+    swal({
+      icon: "success",
+      text: "Login Success!"
+    })
+    hello.play()
     localStorage.setItem("access_token", data.access_token)
     auth()
   })
   .fail((xhr, text) => {
-    console.log(xhr, text)
+    swal({
+      icon: "error",
+      text: xhr.responseJSON.message
+    })
   })
   .always(_=> {
-    $('#register-email').val("")
-    $('#register-password').val("")
+    $('#login-email').val("")
+    $('#login-password').val("")
   })
 }
 
@@ -95,12 +110,19 @@ function register() {
     }
   })
   .then((response) => {
+    swal({
+      icon: "success",
+      text: "Account has been created!"
+    })
     $('#register-email').val(email)
     $('#register-password').val(password)
     auth()
   })
   .fail((xhr, text) => {
-    console.log(xhr, text)
+    swal({
+      icon: "error",
+      text: xhr.responseJSON.message[0]
+    })
   })
   .always(_=> {
     $('#register-email').val("")
@@ -109,6 +131,11 @@ function register() {
 }
 
 function logout() {
+  swal({
+    icon: "info",
+    text: "You have been logged out!"
+  })
+  byebye.play()
   localStorage.removeItem("access_token")
   auth()
 }
@@ -118,7 +145,7 @@ function showRegisterForm() {
   $("#register").show()
 }
 
-function fetchQuote() {
+function fetchQuote(picture, advice) {
   $.ajax({
     url: baseUrl + "quotes",
     method: "GET",
@@ -126,21 +153,24 @@ function fetchQuote() {
       access_token: localStorage.getItem('access_token')
     }
   })
-  .then(response => {
+  .done(response => {
       $("#quote").append(`
+      <img src="${picture}" class="card-img-top">
+      <h5 class="card-title mb-4">${advice}</h5>
       <p class="card-text">${response.quote}</p>
       <p class="card-text" style="font-weight: bold">${response.author}</p>
       `)
-      // <h5 class="card-title mb-4">${response.quote}</h5>
-      
     $("#quote").show()
   })
   .fail((xhr, text) => {
     console.log({ xhr, text });
 })
+.always(_=> {
+  $("#loading").hide()
+})
 }
 
-function fetchAdvice() {
+function fetchAdvice(picture) {
   $.ajax({
     url: baseUrl + "advice",
     method: "GET",
@@ -148,12 +178,9 @@ function fetchAdvice() {
       access_token: localStorage.getItem('access_token')
     }
   })
-  .then(response => {
-      $("#quote").append(`
-      <h5 class="card-title mb-4">${response.advice}</h5>
-      `)
-      fetchQuote()
-    // $("#quote").show()
+  .done(response => {
+      let advice = response.advice
+      fetchQuote(picture, advice)
   })
   .fail((xhr, text) => {
     console.log({ xhr, text });
@@ -161,7 +188,7 @@ function fetchAdvice() {
 }
 
 function fetchPicture() {
-  $("#quote").empty()
+  $("#loading").show()
   $.ajax({
     url: baseUrl + "images",
     method: "GET",
@@ -169,18 +196,16 @@ function fetchPicture() {
       access_token: localStorage.getItem('access_token')
     }
   })
-  .then(response => {
-      $("#quote").append(`
-      <img src="${response.imageUrl}" class="card-img-top">
-      `)
-      // <h5 class="card-title mb-4">${response.quote}</h5>
-      fetchAdvice()
-    // $("#quote").show()
+  .done(response => {
+      let picture = response.imageUrl
+      fetchAdvice(picture)
   })
   .fail((xhr, text) => {
     console.log({ xhr, text });
 })
 }
+
+
 
 function onSignIn(googleUser) {
   $.ajax({
