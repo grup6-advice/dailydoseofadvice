@@ -9,8 +9,8 @@ class ApiController {
       .then(quotes => {
         let data = quotes.data[0];
         let quote = data.body;
-        // let author = data.author;
-        res.status(200).json({quote});
+        let author = data.author;
+        res.status(200).json({quote, author});
       })
       .catch(err => {
          res.status(500).json({message : 'Internal server error'})

@@ -123,6 +123,7 @@ function fetchQuote() {
   .then(response => {
       $("#quote").append(`
       <p class="card-text">${response.quote}</p>
+      <p class="card-text" style="font-weight: bold">${response.author}</p>
       `)
       // <h5 class="card-title mb-4">${response.quote}</h5>
       
